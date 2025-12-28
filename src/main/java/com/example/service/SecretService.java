@@ -37,6 +37,18 @@ public class SecretService {
         return sc;
     }
 
+    @Transactional
+    public String buildMessageFromLink(String token){
+      List<Secret> ls =  repository.findAll().list();
+      for(int i = 0; i<ls.size(); i++){
+          Secret secret = ls.get(i);
+          if(secret.getToken().equals(token)){
+              return secret.getValue();
+          }
+      }
+      return "not found";
+    }
+
     public List<Secret> getData() {
         return repository.findAll().list();
     }

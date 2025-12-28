@@ -31,4 +31,11 @@ public class SecretEndpoint {
     public List<Secret> getSecret(){
         return service.getData();
     }
+
+    @GET
+    @Path("/{token}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getSecretMsg(@PathParam("token") String token){
+        return service.buildMessageFromLink(token);
+    }
 }
