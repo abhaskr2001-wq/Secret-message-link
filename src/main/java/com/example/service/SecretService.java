@@ -1,0 +1,44 @@
+package com.example.service;
+
+import com.example.entity.Secret;
+import com.example.repository.SecretRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+
+import java.security.SecureRandom;
+import java.util.List;
+
+@ApplicationScoped
+public class SecretService {
+
+    @Inject
+    SecretRepository repository;
+
+
+    private static final String CHARACTERS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final int TOKEN_LENGTH = 12;
+    private static final SecureRandom RANDOM = new SecureRandom();
+
+    public static String generateToken() {
+        StringBuilder token = new StringBuilder(TOKEN_LENGTH);
+        for (int i = 0; i < TOKEN_LENGTH; i++) {
+            int index = RANDOM.nextInt(CHARACTERS.length());
+            token.append(CHARACTERS.charAt(index));
+        }
+        return token.toString();
+    }
+
+    @Transactional
+    public Secret buildSecret(String value){
+        Secret sc = new Secret(generateToken(),value);
+        repository.persist(sc);
+        return sc;
+    }
+
+    public List<Secret> getData() {
+        return repository.findAll().list();
+    }
+
+}
