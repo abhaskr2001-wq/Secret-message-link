@@ -7,6 +7,7 @@ import com.example.service.SecretService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class SecretEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Secret hello(SecretRequest request) {
+    public Response hello(SecretRequest request) {
        return service.buildSecret(request.value);
     }
 

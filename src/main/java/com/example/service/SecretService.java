@@ -2,9 +2,11 @@ package com.example.service;
 
 import com.example.entity.Secret;
 import com.example.repository.SecretRepository;
+import com.example.request.TokenResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.Response;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -31,10 +33,10 @@ public class SecretService {
     }
 
     @Transactional
-    public Secret buildSecret(String value){
+    public Response buildSecret(String value){
         Secret sc = new Secret(generateToken(),value);
         repository.persist(sc);
-        return sc;
+        return Response.ok(new TokenResponse(sc.getToken())).build();
     }
 
     @Transactional
