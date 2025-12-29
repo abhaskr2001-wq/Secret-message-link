@@ -43,6 +43,10 @@ public class SecretService {
       for(int i = 0; i<ls.size(); i++){
           Secret secret = ls.get(i);
           if(secret.getToken().equals(token)){
+              if(secret.isUsed()){
+                  return "The secret message was one view only";
+              }
+              secret.markAsUsed();
               return secret.getValue();
           }
       }
